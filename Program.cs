@@ -11,35 +11,39 @@ namespace TestDInjector
         static void Main(string[] args)
         {
             //registering interface and classes into container
-            Container container = new Container();
-            container.Register<IClassA, ClassA>();
-            container.Register<IClassB, ClassB>();
-            container.Register<IClassC, ClassC>();
+        
+            Container.Register<IClassA, ClassA>();
+            Container.Register<IClassB, ClassB>();
+            Container.Register<IClassC, ClassC>();
 
-            SubMain(container);
+            SubMainWithoutDI();
+            SubMainWithDI();
             Console.ReadKey();
         }
 
-        static void SubMain(Container container)
+        static void SubMainWithoutDI()
         {
-            ////without dependency injection, manually inputed the object
-            //ContextA contextA = new ContextA(new ClassA());
-            //ContextB contextB = new ContextB(new ClassA(), new ClassB());
-            //ContextC contextC = new ContextC(new ClassA(), new ClassB(), new ClassC());
+            //without dependency injection, manually inputed the object
+            ContextA contextA = new ContextA(new ClassA());
+            ContextB contextB = new ContextB(new ClassA(), new ClassB());
+            ContextC contextC = new ContextC(new ClassA(), new ClassB(), new ClassC());
 
-            //contextA.DoSomething();
-            //contextB.DoSomething();
-            //contextC.DoSomething();
+            contextA.DoSomething();
+            contextB.DoSomething();
+            contextC.DoSomething();
             
+        }
+
+        static void SubMainWithDI()
+        {
             //with dependency injection, it will automatically injected the proper object into arguments.
-            ContextA _contextA = container.Resolve<ContextA>();
-            ContextB _contextB = container.Resolve<ContextB>();
-            ContextC _contextC = container.Resolve<ContextC>();
+            ContextA _contextA = Container.Resolve<ContextA>();
+            ContextB _contextB = Container.Resolve<ContextB>();
+            ContextC _contextC = Container.Resolve<ContextC>();
 
             _contextA.DoSomething();
             _contextB.DoSomething();
             _contextC.DoSomething();
-
         }
 
         //context
